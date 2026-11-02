@@ -1,48 +1,105 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TCL Retail Pormotion Repository</title>
-  <link rel="icon" href="https:////aws-obg-image-lb-2.tcl.com/content/dam/brandsite/it-resources/common/navigation/tcl-logo.svg" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>TCL Promotion Repository</title>
+
+  <link
+    rel="icon"
+    href="https://aws-obg-image-lb-2.tcl.com/content/dam/brandsite/it-resources/common/navigation/tcl-logo.svg"
+    type="image/svg+xml"
+  />
+
   <style>
-    html, body {
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
       font-family: sans-serif;
+      -webkit-overflow-scrolling: touch;
     }
+
+    body {
+      min-height: 100vh;
+    }
+
     .iframe-container {
       position: relative;
       width: 100%;
       height: 100vh;
+      min-height: 100vh;
+      overflow: visible;
     }
+
+    /*
+      Mobile wrapper strategy:
+      - Keep iframe height stable while the virtual keyboard opens/closes.
+      - Use svh (small viewport height) so browser toolbar changes do not
+        continuously resize the iframe.
+      - Keep a fixed 88px bottom allowance to reduce bottom-edge clipping.
+      - No visualViewport JavaScript listener: Apps Script controls its own
+        dropdown and keyboard positioning inside the iframe.
+    */
+    @media (max-width: 767.98px) {
+      .iframe-container {
+        height: calc(100vh + 88px);
+        min-height: calc(100vh + 88px);
+      }
+
+      @supports (height: 100svh) {
+        .iframe-container {
+          height: calc(100svh + 88px);
+          min-height: calc(100svh + 88px);
+        }
+      }
+    }
+
     iframe {
+      display: block;
       width: 100%;
       height: 100%;
-      border: none;
+      min-height: 0;
+      border: 0;
+      background: #f7f8fa;
     }
+
     .loader {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      color: #666;
       z-index: 10;
+      color: #666;
+      font-size: 1.2rem;
+      pointer-events: none;
     }
   </style>
 </head>
+
 <body>
-  <div class="iframe-container">
-    <div class="loader" id="loader">Loading app...</div>
-    <iframe 
-      src="https://script.google.com/macros/s/AKfycbwGmnawek-BBQyLP9jYQ9iQfbDWq0QI-feRq-pq-2bHk3XYxMwVDTbmfKZSkTWzVXtVjw/exec" 
-      title="TCL Retail Pormotion Repository"
+  <main class="iframe-container">
+    <div class="loader" id="loader" role="status" aria-live="polite">
+      Loading app...
+    </div>
+
+    <iframe
+      src="https://script.google.com/macros/s/AKfycbwGmnawek-BBQyLP9jYQ9iQfbDWq0QI-feRq-pq-2bHk3XYxMwVDTbmfKZSkTWzVXtVjw/exec"
+      title="TCL Promotion Repository"
+      loading="eager"
+      allowfullscreen
       onload="document.getElementById('loader').style.display='none';"
-      allowfullscreen>
-    </iframe>
-  </div>
+    ></iframe>
+  </main>
 </body>
 </html>
