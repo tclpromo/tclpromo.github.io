@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-
   <title>TCL Promotion Repository</title>
 
   <link
@@ -14,58 +12,44 @@
   />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html,
     body {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
       margin: 0;
       padding: 0;
-      width: 100%;
-      min-height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
       font-family: sans-serif;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    body {
-      min-height: 100vh;
-    }
-
-    .iframe-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      min-height: 100vh;
-      overflow: visible;
+      background: #f7f8fa;
     }
 
     /*
-      Mobile wrapper strategy:
-      - Keep iframe height stable while the virtual keyboard opens/closes.
-      - Use svh (small viewport height) so browser toolbar changes do not
-        continuously resize the iframe.
-      - Keep a fixed 88px bottom allowance to reduce bottom-edge clipping.
-      - No visualViewport JavaScript listener: Apps Script controls its own
-        dropdown and keyboard positioning inside the iframe.
+      Keep the iframe exactly within the visible mobile viewport.
+      Do not add extra height: the Apps Script app uses 100dvh/fixed modals
+      internally, so an oversized iframe can push modal controls off-screen.
     */
-    @media (max-width: 767.98px) {
-      .iframe-container {
-        height: calc(100vh + 88px);
-        min-height: calc(100vh + 88px);
-      }
+    .iframe-container {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100vh; /* fallback */
+      min-height: 0;
+      overflow: hidden;
+      background: #f7f8fa;
+    }
 
-      @supports (height: 100svh) {
-        .iframe-container {
-          height: calc(100svh + 88px);
-          min-height: calc(100svh + 88px);
-        }
+    @supports (height: 100svh) {
+      .iframe-container {
+        height: 100svh;
       }
     }
 
     iframe {
+      position: absolute;
+      inset: 0;
       display: block;
       width: 100%;
       height: 100%;
@@ -81,7 +65,7 @@
       transform: translate(-50%, -50%);
       z-index: 10;
       color: #666;
-      font-size: 1.2rem;
+      font-size: 1rem;
       pointer-events: none;
     }
   </style>
